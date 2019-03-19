@@ -459,7 +459,8 @@ class WebSocketCommonProtocol(asyncio.StreamReaderProtocol):
 
         # Notify transfer_data().
         if self._put_message_waiter is not None:
-            self._put_message_waiter.set_result(None)
+            if not self._put_message_waiter.done():
+                self._put_message_waiter.set_result(None)
             self._put_message_waiter = None
 
         return message
